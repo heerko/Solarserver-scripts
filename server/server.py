@@ -57,7 +57,15 @@ async def battery_and_gps_status(websocket, path):
         except websockets.exceptions.ConnectionClosed:
             break
 
+# ping all clients every 5 seconds to keep the connection alive
+async def ping_clients():
+    while True:
+        await asyncio.sleep(5)
+        await asyncio.wait([ws.ping() for ws in websockets.iter_websockets()])
+
 start_server = websockets.serve(battery_and_gps_status, '0.0.0.0', 6789)
+
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+asyncio.ensure_future(ping_clients())
