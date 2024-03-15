@@ -52,24 +52,15 @@ async def battery_and_gps_status(websocket, path):
 
                 # Send battery and GPS status
                 # await websocket.send(f"Charging Status: {charging_status}, Charge Level: {charge_level}%, GPS: {latitude}, {longitude}")
-                await websocket.send(f"Charging Status: {charging_status}, Charge Level: {charge_level}%")
+                await websocket.send(f"Battery Status: {charging_status}, Charge Level: {charge_level}%")
 
             await asyncio.sleep(60)  # Update interval
         except websockets.exceptions.ConnectionClosed:
             break
 
-# Function to ping all clients every 5 seconds to keep the connection alive
-# This needs to correctly manage WebSocket connections (not provided here).
-async def ping_clients():
-    while True:
-        await asyncio.sleep(5)
-        # Here, you would iterate over a managed list of WebSocket connections and send a ping to each.
-        # This implementation detail is left as an exercise.
+async def main():
+    async with websockets.serve(battery_and_gps_status, '0.0.0.0', 6789):
+        print("Server started")
+        await asyncio.Future()  # This will keep the coroutine running indefinitely.
 
-async def start_loop():
-    start_server = websockets.serve(battery_and_gps_status, '0.0.0.0', 6789)
-    await asyncio.get_event_loop().run_until_complete(start_server)
-    await ping_clients()  # Start the pinger along with the server
-
-# Adjusted to correctly start and manage all tasks
-asyncio.get_event_loop().run_until_complete(start_loop())
+asyncio.run(main())
