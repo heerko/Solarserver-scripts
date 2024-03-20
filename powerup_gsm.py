@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(power_key, GPIO.OUT)
 
 def power_up():
-    if not os.path.exists('/dev/ttyUSB2'):
+    if not os.path.exists('/dev/ttyUSB3'):
         print('GSM HAT is not connected, cannot power up.')
         return
 
@@ -26,7 +26,7 @@ def initialize_serial():
     # Initialize serial connection to GSM HAT
     print("Initializing serial connection...")
     try:
-        ser = serial.Serial('/dev/ttyUSB2', 115200, timeout=1)
+        ser = serial.Serial('/dev/ttyUSB3', 115200, timeout=1)
         ser.flushInput()  # Clear the input buffer
         print("Serial connection established.")
         return ser

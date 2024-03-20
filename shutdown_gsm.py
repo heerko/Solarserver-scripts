@@ -9,7 +9,7 @@ GPIO.setup(power_key, GPIO.OUT)
 
 # Function to power down the GSM HAT if /dev/ttyUSB2 exists
 def power_down():
-    if os.path.exists('/dev/ttyUSB2'):
+    if os.path.exists('/dev/ttyUSB3'):
         print('Powering down the GSM HAT...')
         GPIO.output(power_key, GPIO.HIGH)
         time.sleep(3)  # Hold the power key high for 3 seconds to initiate shutdown
